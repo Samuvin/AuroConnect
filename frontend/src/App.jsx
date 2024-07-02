@@ -16,8 +16,7 @@ function App() {
 	const { pathname } = useLocation();
 	return (
 		<Box position={"relative"} w="full">
-			<Container
-				maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}>
+			<Container maxw="fl">
 				<Header />
 				<Routes>
 					<Route
