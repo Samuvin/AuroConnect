@@ -8,7 +8,6 @@ import {
 	Divider,
 	useColorModeValue,
 } from "@chakra-ui/react";
-import { RiArrowUpDoubleLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import Actions from "./Actions";
 import { useEffect, useState } from "react";
@@ -72,7 +71,7 @@ const Post = ({ post, postedBy }) => {
 	if (!user) return null;
 
 	return (
-		<Flex direction="column" p={5} bg={bgColor} minH="100px" color={textColor}>
+		<Flex direction="column" p={5} bg={bgColor} color={textColor}>
 			<Flex direction={["column", "column", "row"]} w="full" gap={5}>
 				<Flex
 					direction="column"
@@ -114,7 +113,7 @@ const Post = ({ post, postedBy }) => {
 						)}
 					</Flex>
 
-					<Text mb={4} textAlign="center" fontSize={["sm", "md"]}>
+					<Text mb={4} fontWeight={"bold"} fontSize={["sm", "md"]}>
 						{post.text}
 					</Text>
 					<Link to={`/${user.username}/post/${post._id}`}>
@@ -134,76 +133,11 @@ const Post = ({ post, postedBy }) => {
 						<Actions post={post} />
 					</Flex>
 				</Flex>
-
-				{/* Divider */}
 				<Divider
 					orientation="vertical"
 					display={["none", "none", "flex"]}
 					borderColor={dividerColor}
 				/>
-
-				{/* Replies Section */}
-				<Flex
-					display={["none", "none", "flex"]}
-					direction="column"
-					gap={4}
-					p={4}
-					bg={colorMode === "light" ? "white" : "gray.800"}
-					borderRadius="md"
-					sx={{
-						boxShadow:
-							"rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset",
-					}}
-					flex="1"
-					mb={4}>
-					<Text fontWeight="bold" mb={2} color={textColor}>
-						Replies
-					</Text>
-					{post.replies.length > 0 ? (
-						post.replies.map((reply, index) => (
-							<Box key={reply._id}>
-								{index > 0 && <Divider borderColor={dividerColor} />}
-								<Flex
-									mb={index === post.replies.length - 1 ? 0 : 4}
-									p={4}
-									bg={colorMode === "light" ? "white" : "gray.800"}
-									borderRadius="md"
-									boxShadow="md">
-									<Avatar
-										size="xs"
-										name="Reply User"
-										src={reply.userProfilePic}
-										mr={2}
-									/>
-									<Text
-										fontSize="sm"
-										color={textColor}
-										bg={colorMode === "light" ? "white" : "gray.800"}>
-										{reply.text}
-									</Text>
-								</Flex>
-							</Box>
-						))
-					) : (
-						<Flex
-							direction="column"
-							alignItems="center"
-							justifyContent="center"
-							textAlign="center"
-							bg={colorMode === "light" ? "white" : "gray.800"}
-							p={4}
-							borderRadius="md"
-							sx={{
-								boxShadow:
-									"rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px",
-							}}>
-							<Text fontSize="lg" color="gray.500">
-								No replies yet.
-							</Text>
-							<RiArrowUpDoubleLine size="2em" color="gray.500" mt={4} />
-						</Flex>
-					)}
-				</Flex>
 			</Flex>
 		</Flex>
 	);
