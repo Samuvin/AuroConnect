@@ -220,7 +220,6 @@ const RepostSVG = () => {
 const ShareSVG = ({ post }) => {
 	const location = useLocation();
 
-	console.log(location.pathname + post._id);
 	return (
 		<svg
 			aria-label="Share"

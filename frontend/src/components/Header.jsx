@@ -11,7 +11,7 @@ import {
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { AiFillHome } from "react-icons/ai";
-import { RxAvatar } from "react-icons/rx";
+import { PiWechatLogoBold } from "react-icons/pi";
 import { Link as RouterLink } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import useLogout from "../hooks/useLogout";
@@ -19,6 +19,7 @@ import authScreenAtom from "../atoms/authAtom";
 import { GiStrikingArrows } from "react-icons/gi";
 import { BsFillChatQuoteFill } from "react-icons/bs";
 import { MdOutlineSettings } from "react-icons/md";
+import { PiUserSwitchFill } from "react-icons/pi";
 
 const Header = () => {
 	const { colorMode, toggleColorMode } = useColorMode();
@@ -45,7 +46,7 @@ const Header = () => {
 				<Tooltip label="Home" aria-label="Home Tooltip">
 					<Link as={RouterLink} to="/">
 						<IconButton
-							icon={<AiFillHome />}
+							icon={<AiFillHome size="1.7rem" />}
 							aria-label="Home"
 							variant="ghost"
 							size="lg"
@@ -67,15 +68,16 @@ const Header = () => {
 			)}
 
 			<Box
-				w={6}
-				h={6}
+				w={7}
+				h={7}
 				display="flex"
 				alignItems="center"
 				justifyContent="center"
 				cursor="pointer"
+				marginLeft={20}
 				onClick={toggleColorMode}
 				_hover={{ transform: "scale(1.2)", transition: "0.2s" }}>
-				<GiStrikingArrows size={26} color={color} />
+				<GiStrikingArrows size={30} color={color} />
 			</Box>
 
 			{user ? (
@@ -83,7 +85,7 @@ const Header = () => {
 					<Tooltip label="Profile" aria-label="Profile Tooltip">
 						<Link as={RouterLink} to={`/${user.username}`}>
 							<IconButton
-								icon={<RxAvatar />}
+								icon={<PiUserSwitchFill size="1.7rem" />}
 								aria-label="Profile"
 								variant="ghost"
 								size="lg"
@@ -95,7 +97,7 @@ const Header = () => {
 					<Tooltip label="Chat" aria-label="Chat Tooltip">
 						<Link as={RouterLink} to={`/chat`}>
 							<IconButton
-								icon={<BsFillChatQuoteFill />}
+								icon={<PiWechatLogoBold size="1.7rem" />}
 								aria-label="Chat"
 								variant="ghost"
 								size="lg"
@@ -107,7 +109,7 @@ const Header = () => {
 					<Tooltip label="Settings" aria-label="Settings Tooltip">
 						<Link as={RouterLink} to={`/settings`}>
 							<IconButton
-								icon={<MdOutlineSettings />}
+								icon={<MdOutlineSettings size="1.7rem" />}
 								aria-label="Settings"
 								variant="ghost"
 								size="lg"
@@ -118,7 +120,7 @@ const Header = () => {
 					</Tooltip>
 					<Tooltip label="Logout" aria-label="Logout Tooltip">
 						<IconButton
-							icon={<FiLogOut />}
+							icon={<FiLogOut size="1.7rem" />}
 							aria-label="Logout"
 							variant="ghost"
 							size="lg"

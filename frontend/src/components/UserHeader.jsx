@@ -51,7 +51,7 @@ const UserHeader = ({ user }) => {
 							color={"gray.300"}
 							p={1}
 							borderRadius={"full"}>
-							threads.net
+							Aura.net
 						</Text>
 					</Flex>
 				</Box>

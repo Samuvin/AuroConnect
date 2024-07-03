@@ -15,10 +15,14 @@ const getUserProfile = async (req, res) => {
 
 		// query is userId
 		if (mongoose.Types.ObjectId.isValid(query)) {
-			user = await User.findOne({ _id: query }).select("-password").select("-updatedAt");
+			user = await User.findOne({ _id: query })
+				.select("-password")
+				.select("-updatedAt");
 		} else {
 			// query is username
-			user = await User.findOne({ username: query }).select("-password").select("-updatedAt");
+			user = await User.findOne({ username: query })
+				.select("-password")
+				.select("-updatedAt");
 		}
 
 		if (!user) return res.status(404).json({ error: "User not found" });
@@ -73,9 +77,13 @@ const loginUser = async (req, res) => {
 	try {
 		const { username, password } = req.body;
 		const user = await User.findOne({ username });
-		const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
+		const isPasswordCorrect = await bcrypt.compare(
+			password,
+			user?.password || ""
+		);
 
-		if (!user || !isPasswordCorrect) return res.status(400).json({ error: "Invalid username or password" });
+		if (!user || !isPasswordCorrect)
+			return res.status(400).json({ error: "Invalid username or password" });
 
 		if (user.isFrozen) {
 			user.isFrozen = false;
@@ -115,9 +123,12 @@ const followUnFollowUser = async (req, res) => {
 		const currentUser = await User.findById(req.user._id);
 
 		if (id === req.user._id.toString())
-			return res.status(400).json({ error: "You cannot follow/unfollow yourself" });
+			return res
+				.status(400)
+				.json({ error: "You cannot follow/unfollow yourself" });
 
-		if (!userToModify || !currentUser) return res.status(400).json({ error: "User not found" });
+		if (!userToModify || !currentUser)
+			return res.status(400).json({ error: "User not found" });
 
 		const isFollowing = currentUser.following.includes(id);
 
@@ -148,7 +159,9 @@ const updateUser = async (req, res) => {
 		if (!user) return res.status(400).json({ error: "User not found" });
 
 		if (req.params.id !== userId.toString())
-			return res.status(400).json({ error: "You cannot update other user's profile" });
+			return res
+				.status(400)
+				.json({ error: "You cannot update other user's profile" });
 
 		if (password) {
 			const salt = await bcrypt.genSalt(10);
@@ -158,7 +171,9 @@ const updateUser = async (req, res) => {
 
 		if (profilePic) {
 			if (user.profilePic) {
-				await cloudinary.uploader.destroy(user.profilePic.split("/").pop().split(".")[0]);
+				await cloudinary.uploader.destroy(
+					user.profilePic.split("/").pop().split(".")[0]
+				);
 			}
 
 			const uploadedResponse = await cloudinary.uploader.upload(profilePic);
@@ -212,7 +227,9 @@ const getSuggestedUsers = async (req, res) => {
 				$sample: { size: 10 },
 			},
 		]);
-		const filteredUsers = users.filter((user) => !usersFollowedByYou.following.includes(user._id));
+		const filteredUsers = users.filter(
+			(user) => !usersFollowedByYou.following.includes(user._id)
+		);
 		const suggestedUsers = filteredUsers.slice(0, 4);
 
 		suggestedUsers.forEach((user) => (user.password = null));
@@ -239,8 +256,30 @@ const freezeAccount = async (req, res) => {
 	}
 };
 
+const getFollowers = async (req, res) => {
+	const user = req.params.id;
+	try {
+		const result = await User.findById({ _id: user });
+		res.status(200).json(result.followers);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
+
+const getFollowing = async (req, res) => {
+	const user = req.params.id;
+	try {
+		const result = await User.findById({ _id: user });
+		res.status(200).json(result.following);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
+
 export {
 	signupUser,
+	getFollowing,
+	getFollowers,
 	loginUser,
 	logoutUser,
 	followUnFollowUser,
