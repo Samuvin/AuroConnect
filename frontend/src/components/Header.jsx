@@ -1,4 +1,13 @@
-import { Button, Flex, Box, Link, useColorMode } from "@chakra-ui/react";
+import {
+	Button,
+	Flex,
+	Box,
+	Link,
+	useColorMode,
+	useColorModeValue,
+	IconButton,
+	Tooltip,
+} from "@chakra-ui/react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { AiFillHome } from "react-icons/ai";
@@ -17,50 +26,118 @@ const Header = () => {
 	const logout = useLogout();
 	const setAuthScreen = useSetRecoilState(authScreenAtom);
 
+	const bg = useColorModeValue("gray.100", "gray.900");
+	const color = useColorModeValue("black", "white");
+	const hoverBg = useColorModeValue("gray.200", "gray.800");
+
 	return (
-		<Flex justifyContent={"space-between"} mt={6} mb="12">
-			{user && (
-				<Link as={RouterLink} to="/">
-					<AiFillHome size={24} />
-				</Link>
-			)}
-			{!user && (
-				<Link
+		<Flex
+			justifyContent={"space-between"}
+			alignItems="center"
+			mt={6}
+			mb="12"
+			p={4}
+			bg={bg}
+			marginTop={0}
+			borderRadius="md"
+			boxShadow="lg">
+			{user ? (
+				<Tooltip label="Home" aria-label="Home Tooltip">
+					<Link as={RouterLink} to="/">
+						<IconButton
+							icon={<AiFillHome />}
+							aria-label="Home"
+							variant="ghost"
+							size="lg"
+							color={color}
+							_hover={{ bg: hoverBg }}
+						/>
+					</Link>
+				</Tooltip>
+			) : (
+				<Button
 					as={RouterLink}
 					to={"/auth"}
-					onClick={() => setAuthScreen("login")}>
+					onClick={() => setAuthScreen("login")}
+					variant="solid"
+					colorScheme="teal"
+					size="md">
 					Login
-				</Link>
+				</Button>
 			)}
 
-			<Box alt="logo" w={6} onClick={toggleColorMode}>
-				<GiStrikingArrows size={26} />
+			<Box
+				w={6}
+				h={6}
+				display="flex"
+				alignItems="center"
+				justifyContent="center"
+				cursor="pointer"
+				onClick={toggleColorMode}
+				_hover={{ transform: "scale(1.2)", transition: "0.2s" }}>
+				<GiStrikingArrows size={26} color={color} />
 			</Box>
 
-			{user && (
+			{user ? (
 				<Flex alignItems={"center"} gap={4}>
-					<Link as={RouterLink} to={`/${user.username}`}>
-						<RxAvatar size={24} />
-					</Link>
-					<Link as={RouterLink} to={`/chat`}>
-						<BsFillChatQuoteFill size={20} />
-					</Link>
-					<Link as={RouterLink} to={`/settings`}>
-						<MdOutlineSettings size={20} />
-					</Link>
-					<Button size={"xs"} onClick={logout}>
-						<FiLogOut size={20} />
-					</Button>
+					<Tooltip label="Profile" aria-label="Profile Tooltip">
+						<Link as={RouterLink} to={`/${user.username}`}>
+							<IconButton
+								icon={<RxAvatar />}
+								aria-label="Profile"
+								variant="ghost"
+								size="lg"
+								color={color}
+								_hover={{ bg: hoverBg }}
+							/>
+						</Link>
+					</Tooltip>
+					<Tooltip label="Chat" aria-label="Chat Tooltip">
+						<Link as={RouterLink} to={`/chat`}>
+							<IconButton
+								icon={<BsFillChatQuoteFill />}
+								aria-label="Chat"
+								variant="ghost"
+								size="lg"
+								color={color}
+								_hover={{ bg: hoverBg }}
+							/>
+						</Link>
+					</Tooltip>
+					<Tooltip label="Settings" aria-label="Settings Tooltip">
+						<Link as={RouterLink} to={`/settings`}>
+							<IconButton
+								icon={<MdOutlineSettings />}
+								aria-label="Settings"
+								variant="ghost"
+								size="lg"
+								color={color}
+								_hover={{ bg: hoverBg }}
+							/>
+						</Link>
+					</Tooltip>
+					<Tooltip label="Logout" aria-label="Logout Tooltip">
+						<IconButton
+							icon={<FiLogOut />}
+							aria-label="Logout"
+							variant="ghost"
+							size="lg"
+							onClick={logout}
+							color={color}
+							_hover={{ bg: "red.500", color: "white" }}
+						/>
+					</Tooltip>
 				</Flex>
-			)}
-
-			{!user && (
-				<Link
+			) : (
+				<Button
 					as={RouterLink}
 					to={"/auth"}
-					onClick={() => setAuthScreen("signup")}>
+					onClick={() => setAuthScreen("signup")}
+					variant="solid"
+					colorScheme="teal"
+					size="md">
 					Sign up
-				</Link>
+				</Button>
 			)}
 		</Flex>
 	);

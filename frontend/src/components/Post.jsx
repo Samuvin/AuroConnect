@@ -71,8 +71,58 @@ const Post = ({ post, postedBy }) => {
 	if (!user) return null;
 
 	return (
-		<Flex direction="column" p={5} bg={bgColor} color={textColor}>
+		<Flex direction="column" p={5} bg={bgColor} minH="100px" color={textColor}>
 			<Flex direction={["column", "column", "row"]} w="full" gap={5}>
+				<Flex flexDirection={"column"} alignItems={"center"}>
+					<Avatar
+						size="md"
+						name={user.name}
+						src={user?.profilePic}
+						onClick={(e) => {
+							e.preventDefault();
+							navigate(`/${user.username}`);
+						}}
+					/>
+					<Box w="1px" h={"full"} bg="gray.light" my={2}></Box>
+					<Box position={"relative"} w={"full"}>
+						{post.replies.length === 0 && <Text textAlign={"center"}>🥱</Text>}
+						{post.replies[0] && (
+							<Avatar
+								size="xs"
+								name="John doe"
+								src={post.replies[0].userProfilePic}
+								position={"absolute"}
+								top={"0px"}
+								left="15px"
+								padding={"2px"}
+							/>
+						)}
+
+						{post.replies[1] && (
+							<Avatar
+								size="xs"
+								name="John doe"
+								src={post.replies[1].userProfilePic}
+								position={"absolute"}
+								bottom={"0px"}
+								right="-5px"
+								padding={"2px"}
+							/>
+						)}
+
+						{post.replies[2] && (
+							<Avatar
+								size="xs"
+								name="John doe"
+								src={post.replies[2].userProfilePic}
+								position={"absolute"}
+								bottom={"0px"}
+								left="4px"
+								padding={"2px"}
+							/>
+						)}
+					</Box>
+				</Flex>
 				<Flex
 					direction="column"
 					gap={4}
@@ -86,13 +136,6 @@ const Post = ({ post, postedBy }) => {
 					flex="1"
 					mb={4}>
 					<Flex alignItems="center" mb={4}>
-						<Avatar
-							size="md"
-							name={user.name}
-							src={user?.profilePic}
-							cursor="pointer"
-							onClick={() => navigate(`/${user.username}`)}
-						/>
 						<Box ml={3}>
 							<Text
 								fontWeight="bold"
@@ -113,7 +156,7 @@ const Post = ({ post, postedBy }) => {
 						)}
 					</Flex>
 
-					<Text mb={4} fontWeight={"bold"} fontSize={["sm", "md"]}>
+					<Text mb={4} textAlign="center" fontSize={["sm", "md"]}>
 						{post.text}
 					</Text>
 					<Link to={`/${user.username}/post/${post._id}`}>
@@ -133,11 +176,15 @@ const Post = ({ post, postedBy }) => {
 						<Actions post={post} />
 					</Flex>
 				</Flex>
+
+				{/* Divider */}
 				<Divider
 					orientation="vertical"
 					display={["none", "none", "flex"]}
 					borderColor={dividerColor}
 				/>
+
+				{/* Replies Section */}
 			</Flex>
 		</Flex>
 	);

@@ -1,9 +1,21 @@
-import { Avatar, Divider, Flex, Image, Skeleton, SkeletonCircle, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+	Avatar,
+	Divider,
+	Flex,
+	Image,
+	Skeleton,
+	SkeletonCircle,
+	Text,
+	useColorModeValue,
+} from "@chakra-ui/react";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
 import { useEffect, useRef, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
-import { conversationsAtom, selectedConversationAtom } from "../atoms/messagesAtom";
+import {
+	conversationsAtom,
+	selectedConversationAtom,
+} from "../atoms/messagesAtom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { useSocket } from "../context/SocketContext.jsx";
@@ -51,7 +63,9 @@ const MessageContainer = () => {
 	}, [socket, selectedConversation, setConversations]);
 
 	useEffect(() => {
-		const lastMessageIsFromOtherUser = messages.length && messages[messages.length - 1].sender !== currentUser._id;
+		const lastMessageIsFromOtherUser =
+			messages.length &&
+			messages[messages.length - 1].sender !== currentUser._id;
 		if (lastMessageIsFromOtherUser) {
 			socket.emit("markMessagesAsSeen", {
 				conversationId: selectedConversation._id,
@@ -106,56 +120,76 @@ const MessageContainer = () => {
 
 	return (
 		<Flex
-			flex='70'
-			bg={useColorModeValue("gray.200", "gray.dark")}
-			borderRadius={"md"}
-			p={2}
-			flexDirection={"column"}
-		>
-			{/* Message header */}
-			<Flex w={"full"} h={12} alignItems={"center"} gap={2}>
-				<Avatar src={selectedConversation.userProfilePic} size={"sm"} />
-				<Text display={"flex"} alignItems={"center"}>
-					{selectedConversation.username} <Image src='/verified.png' w={4} h={4} ml={1} />
-				</Text>
-			</Flex>
+			flex={2}
+			width={10}
+			alignItems="center"
+			justifyContent="center"
+			p={8}
+			borderRadius="xl"
+			bg={useColorModeValue("gray.200", "gray.600")}>
+			<Flex
+				flex="70"
+				bg={useColorModeValue("gray.200", "gray.dark")}
+				borderRadius={"md"}
+				p={2}
+				flexDirection={"column"}>
+				{/* Message header */}
+				<Flex w={"full"} h={12} alignItems={"center"} gap={2}>
+					<Avatar src={selectedConversation.userProfilePic} size={"sm"} />
+					<Text display={"flex"} alignItems={"center"}>
+						{selectedConversation.username}{" "}
+						<Image src="/verified.png" w={4} h={4} ml={1} />
+					</Text>
+				</Flex>
 
-			<Divider />
+				<Divider />
 
-			<Flex flexDir={"column"} gap={4} my={4} p={2} height={"400px"} overflowY={"auto"}>
-				{loadingMessages &&
-					[...Array(5)].map((_, i) => (
-						<Flex
-							key={i}
-							gap={2}
-							alignItems={"center"}
-							p={1}
-							borderRadius={"md"}
-							alignSelf={i % 2 === 0 ? "flex-start" : "flex-end"}
-						>
-							{i % 2 === 0 && <SkeletonCircle size={7} />}
-							<Flex flexDir={"column"} gap={2}>
-								<Skeleton h='8px' w='250px' />
-								<Skeleton h='8px' w='250px' />
-								<Skeleton h='8px' w='250px' />
+				<Flex
+					flexDir={"column"}
+					gap={4}
+					my={4}
+					p={2}
+					height={"400px"}
+					overflowY={"auto"}>
+					{loadingMessages &&
+						[...Array(5)].map((_, i) => (
+							<Flex
+								key={i}
+								gap={2}
+								alignItems={"center"}
+								p={1}
+								borderRadius={"md"}
+								alignSelf={i % 2 === 0 ? "flex-start" : "flex-end"}>
+								{i % 2 === 0 && <SkeletonCircle size={7} />}
+								<Flex flexDir={"column"} gap={2}>
+									<Skeleton h="8px" w="250px" />
+									<Skeleton h="8px" w="250px" />
+									<Skeleton h="8px" w="250px" />
+								</Flex>
+								{i % 2 !== 0 && <SkeletonCircle size={7} />}
 							</Flex>
-							{i % 2 !== 0 && <SkeletonCircle size={7} />}
-						</Flex>
-					))}
+						))}
 
-				{!loadingMessages &&
-					messages.map((message) => (
-						<Flex
-							key={message._id}
-							direction={"column"}
-							ref={messages.length - 1 === messages.indexOf(message) ? messageEndRef : null}
-						>
-							<Message message={message} ownMessage={currentUser._id === message.sender} />
-						</Flex>
-					))}
+					{!loadingMessages &&
+						messages.map((message) => (
+							<Flex
+								key={message._id}
+								direction={"column"}
+								ref={
+									messages.length - 1 === messages.indexOf(message)
+										? messageEndRef
+										: null
+								}>
+								<Message
+									message={message}
+									ownMessage={currentUser._id === message.sender}
+								/>
+							</Flex>
+						))}
+				</Flex>
+
+				<MessageInput setMessages={setMessages} />
 			</Flex>
-
-			<MessageInput setMessages={setMessages} />
 		</Flex>
 	);
 };

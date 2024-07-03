@@ -65,15 +65,21 @@ export default function SignupCard() {
 						Sign up
 					</Heading>
 				</Stack>
-				<Box rounded={"lg"} bg={useColorModeValue("white", "gray.dark")} boxShadow={"lg"} p={8}>
+				<Box
+					rounded={"lg"}
+					bg={useColorModeValue("white", "gray.dark")}
+					boxShadow={"lg"}
+					p={8}>
 					<Stack spacing={4}>
 						<HStack>
 							<Box>
 								<FormControl isRequired>
 									<FormLabel>Full name</FormLabel>
 									<Input
-										type='text'
-										onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
+										type="text"
+										onChange={(e) =>
+											setInputs({ ...inputs, name: e.target.value })
+										}
 										value={inputs.name}
 									/>
 								</FormControl>
@@ -82,8 +88,10 @@ export default function SignupCard() {
 								<FormControl isRequired>
 									<FormLabel>Username</FormLabel>
 									<Input
-										type='text'
-										onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
+										type="text"
+										onChange={(e) =>
+											setInputs({ ...inputs, username: e.target.value })
+										}
 										value={inputs.username}
 									/>
 								</FormControl>
@@ -92,8 +100,10 @@ export default function SignupCard() {
 						<FormControl isRequired>
 							<FormLabel>Email address</FormLabel>
 							<Input
-								type='email'
-								onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
+								type="email"
+								onChange={(e) =>
+									setInputs({ ...inputs, email: e.target.value })
+								}
 								value={inputs.email}
 							/>
 						</FormControl>
@@ -102,14 +112,17 @@ export default function SignupCard() {
 							<InputGroup>
 								<Input
 									type={showPassword ? "text" : "password"}
-									onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
+									onChange={(e) =>
+										setInputs({ ...inputs, password: e.target.value })
+									}
 									value={inputs.password}
 								/>
 								<InputRightElement h={"full"}>
 									<Button
 										variant={"ghost"}
-										onClick={() => setShowPassword((showPassword) => !showPassword)}
-									>
+										onClick={() =>
+											setShowPassword((showPassword) => !showPassword)
+										}>
 										{showPassword ? <ViewIcon /> : <ViewOffIcon />}
 									</Button>
 								</InputRightElement>
@@ -117,15 +130,14 @@ export default function SignupCard() {
 						</FormControl>
 						<Stack spacing={10} pt={2}>
 							<Button
-								loadingText='Submitting'
-								size='lg'
+								loadingText="Submitting"
+								size="lg"
 								bg={useColorModeValue("gray.600", "gray.700")}
 								color={"white"}
 								_hover={{
 									bg: useColorModeValue("gray.700", "gray.800"),
 								}}
-								onClick={handleSignup}
-							>
+								onClick={handleSignup}>
 								Sign up
 							</Button>
 						</Stack>

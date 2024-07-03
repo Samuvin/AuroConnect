@@ -29,21 +29,34 @@ const UserHeader = ({ user }) => {
 	};
 
 	return (
-		<VStack gap={4} alignItems={"start"}>
-			<Flex justifyContent={"space-between"} w={"full"}>
+		<VStack
+			gap={4}
+			alignItems={"start"}
+			w={"full"}
+			p={4}
+			bg="gray.700"
+			borderRadius="lg">
+			<Flex justifyContent={"space-between"} w={"full"} alignItems="center">
 				<Box>
-					<Text fontSize={"2xl"} fontWeight={"bold"}>
+					<Text fontSize={"2xl"} fontWeight={"bold"} color="white">
 						{user.name}
 					</Text>
 					<Flex gap={2} alignItems={"center"}>
-						<Text fontSize={"sm"}>{user.username}</Text>
-						<Text fontSize={"xs"} bg={"gray.dark"} color={"gray.light"} p={1} borderRadius={"full"}>
+						<Text fontSize={"sm"} color="gray.400">
+							{user.username}
+						</Text>
+						<Text
+							fontSize={"xs"}
+							bg={"gray.600"}
+							color={"gray.300"}
+							p={1}
+							borderRadius={"full"}>
 							threads.net
 						</Text>
 					</Flex>
 				</Box>
 				<Box>
-					{user.profilePic && (
+					{user.profilePic ? (
 						<Avatar
 							name={user.name}
 							src={user.profilePic}
@@ -52,11 +65,10 @@ const UserHeader = ({ user }) => {
 								md: "xl",
 							}}
 						/>
-					)}
-					{!user.profilePic && (
+					) : (
 						<Avatar
 							name={user.name}
-							src='https://bit.ly/broken-link'
+							src="https://bit.ly/broken-link"
 							size={{
 								base: "md",
 								md: "xl",
@@ -66,10 +78,10 @@ const UserHeader = ({ user }) => {
 				</Box>
 			</Flex>
 
-			<Text>{user.bio}</Text>
+			<Text color="gray.300">{user.bio}</Text>
 
 			{currentUser?._id === user._id && (
-				<Link as={RouterLink} to='/update'>
+				<Link as={RouterLink} to="/update">
 					<Button size={"sm"}>Update Profile</Button>
 				</Link>
 			)}
@@ -78,46 +90,34 @@ const UserHeader = ({ user }) => {
 					{following ? "Unfollow" : "Follow"}
 				</Button>
 			)}
-			<Flex w={"full"} justifyContent={"space-between"}>
+
+			<Flex w={"full"} justifyContent={"space-between"} alignItems="center">
 				<Flex gap={2} alignItems={"center"}>
-					<Text color={"gray.light"}>{user.followers.length} followers</Text>
-					<Box w='1' h='1' bg={"gray.light"} borderRadius={"full"}></Box>
-					<Link color={"gray.light"}>instagram.com</Link>
+					<Text color={"gray.300"}>{user.followers.length} followers</Text>
+					<Box w="1" h="1" bg={"gray.300"} borderRadius={"full"}></Box>
+					<Link color={"gray.300"}>instagram.com</Link>
 				</Flex>
 				<Flex>
-					<Box className='icon-container'>
-						<BsInstagram size={24} cursor={"pointer"} />
+					<Box className="icon-container" mx={2}>
+						<BsInstagram size={24} cursor={"pointer"} color="white" />
 					</Box>
-					<Box className='icon-container'>
+					<Box className="icon-container">
 						<Menu>
 							<MenuButton>
-								<CgMoreO size={24} cursor={"pointer"} />
+								<CgMoreO size={24} cursor={"pointer"} color="white" />
 							</MenuButton>
 							<Portal>
-								<MenuList bg={"gray.dark"}>
-									<MenuItem bg={"gray.dark"} onClick={copyURL}>
+								<MenuList bg={"gray.800"}>
+									<MenuItem
+										bg={"gray.800"}
+										onClick={copyURL}
+										_hover={{ bg: "gray.700" }}>
 										Copy link
 									</MenuItem>
 								</MenuList>
 							</Portal>
 						</Menu>
 					</Box>
-				</Flex>
-			</Flex>
-
-			<Flex w={"full"}>
-				<Flex flex={1} borderBottom={"1.5px solid white"} justifyContent={"center"} pb='3' cursor={"pointer"}>
-					<Text fontWeight={"bold"}> Threads</Text>
-				</Flex>
-				<Flex
-					flex={1}
-					borderBottom={"1px solid gray"}
-					justifyContent={"center"}
-					color={"gray.light"}
-					pb='3'
-					cursor={"pointer"}
-				>
-					<Text fontWeight={"bold"}> Replies</Text>
 				</Flex>
 			</Flex>
 		</VStack>
