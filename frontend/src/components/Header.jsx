@@ -16,7 +16,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import useLogout from "../hooks/useLogout";
 import authScreenAtom from "../atoms/authAtom";
-import { GiStrikingArrows } from "react-icons/gi";
+import { GiBookAura } from "react-icons/gi";
 import { BsFillChatQuoteFill } from "react-icons/bs";
 import { MdOutlineSettings } from "react-icons/md";
 import { PiUserSwitchFill } from "react-icons/pi";
@@ -77,7 +77,7 @@ const Header = () => {
 				marginLeft={20}
 				onClick={toggleColorMode}
 				_hover={{ transform: "scale(1.2)", transition: "0.2s" }}>
-				<GiStrikingArrows size={30} color={color} />
+				<GiBookAura size={30} color={color} />
 			</Box>
 
 			{user ? (

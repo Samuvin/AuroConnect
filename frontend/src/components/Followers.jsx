@@ -1,5 +1,4 @@
 import {
-	Box,
 	Flex,
 	Spinner,
 	Button,
@@ -22,7 +21,6 @@ const Followers = ({ id }) => {
 			try {
 				const response = await fetch(`/api/users/profile/${id}`);
 				const follower = await response.json();
-				console.log(follower);
 				if (follower) {
 					setUser(follower);
 				}
@@ -67,18 +65,23 @@ const Followers = ({ id }) => {
 				}}
 				flex="1"
 				mb={4}>
-				<Flex>
-					<Flex>
-						<Avatar src={user.profilePic} m={2} />
-						<Text fontWeight="bold" cursor="pointer">
-							{user?.username}
-						</Text>
-						<Text fontSize="sm" color="gray.500">
-							{user?.name}
-						</Text>
+				<Flex justifyContent="space-between" w="full">
+					<Flex gap={2} flexDirection={"column"}>
+						<Flex>
+							<Avatar></Avatar>
+							<Text ms={4} mt={3}>
+								{user.name}
+							</Text>
+						</Flex>
+						<Flex>
+							<Text ms={3}>{user.username}</Text>
+						</Flex>
 					</Flex>
 					<Flex>
-						<Button alignSelf={"flex-end"}> Follow</Button>
+						<Text mt={4}>{user.bio}</Text>
+					</Flex>
+					<Flex>
+						<Button mt={2}>Follow</Button>
 					</Flex>
 				</Flex>
 			</Flex>

@@ -20,20 +20,27 @@ import UserHeader from "../components/UserHeader";
 import Post from "../components/Post";
 import { Grid, GridItem } from "@chakra-ui/react";
 import Followers from "../components/Followers";
+import { useRecoilValue } from "recoil";
+import userAtom from "../atoms/userAtom";
+import useFollowUnfollow from "../hooks/useFollowUnfollow";
+
 const UserPage = () => {
 	const { user, loading } = useGetUserProfile();
 	const { username } = useParams();
+	const currentUser = useRecoilValue(userAtom);
+	// const { handleFollowUnfollow, following, updating } = useFollowUnfollow(user);
+
 	const showToast = useShowToast();
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [fetchingPosts, setFetchingPosts] = useState(true);
 	const [isFollowing, setIsFollowing] = useState(false);
-	const [followers, setFollowers] = useState([]);
-	const [following, setFollowing] = useState([]);
+	const [followers, setFollowers] = useState(null);
+	const [followings, setFollowing] = useState(null);
 	const bg = useColorModeValue("white", "gray.800");
 	const color = useColorModeValue("gray.800", "white");
-
 	const bgColor = useColorModeValue("gray.100", "gray.800");
 	const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
+	console.log("current", currentUser);
 	useEffect(() => {
 		const getPosts = async () => {
 			if (!user) return;
@@ -75,8 +82,9 @@ const UserPage = () => {
 		const fetchFollowing = async () => {
 			if (!user) return;
 			try {
-				const res = await fetch(`/api/users/${username}/following`);
+				const res = await fetch(`/api/users/following/${user._id}`);
 				const data = await res.json();
+				console.log(data);
 				setFollowing(data);
 			} catch (error) {
 				showToast("Error", error.message, "error");
@@ -86,7 +94,7 @@ const UserPage = () => {
 		getPosts();
 		// checkFollowStatus();
 		fetchFollowers();
-		// fetchFollowing();
+		fetchFollowing();
 	}, [username, showToast, setPosts, user]);
 
 	const handleFollowToggle = async () => {
@@ -136,12 +144,20 @@ const UserPage = () => {
 						{user.bio}
 					</Text>
 				</Stack>
-				<Button
-					leftIcon={<Icon as={isFollowing ? MdPersonRemove : MdPersonAdd} />}
-					colorScheme={isFollowing ? "red" : "teal"}
-					onClick={handleFollowToggle}>
-					{isFollowing ? "Unfollow" : "Follow"}
-				</Button>
+				{/* {currentUser._id !== user._id && (
+					<Button
+						size={"sm"}
+						color={following ? "black" : "white"}
+						bg={following ? "white" : "blue.400"}
+						onClick={handleFollowUnfollow}
+						isLoading={updating}
+						_hover={{
+							color: following ? "black" : "white",
+							opacity: ".8",
+						}}>
+						{following ? "Unfollow" : "Follow"}
+					</Button>
+				)} */}
 			</Flex>
 			<Grid templateColumns="repeat(3, 1fr)" gap={6}>
 				<GridItem w="100%" h="100%">
@@ -171,7 +187,7 @@ const UserPage = () => {
 						fontWeight="bold"
 						textAlign={"center"}
 						color="gray.500">
-						{followers.length} Followers
+						{followers ? followers.length : 0} Followers
 					</Text>
 					<Flex
 						direction="column"
@@ -181,22 +197,40 @@ const UserPage = () => {
 						color={textColor}
 						spacing={4}
 						mt={5}>
-						<Followers id={"666a8c59e1875745d998ca2d"} />
-						<Followers id={"666a8c59e1875745d998ca2d"} />
-						<Followers id={"666a8c59e1875745d998ca2d"} />
+						{followers ? (
+							followers.map((follower) => (
+								<Followers key={follower} id={follower} />
+							))
+						) : (
+							<h1>NO Folllowers</h1>
+						)}
 					</Flex>
 				</GridItem>
 				<GridItem w="100%" h="100%">
-					<Box textAlign="center">
-						<Button variant="link">
-							<Text fontSize="lg" fontWeight="bold">
-								{following.length}
-							</Text>
-							<Text fontSize="md" color="gray.500">
-								Following
-							</Text>
-						</Button>
-					</Box>
+					<Text
+						m={2}
+						fontSize="lg"
+						fontWeight="bold"
+						textAlign={"center"}
+						color="gray.500">
+						{followings ? followings.length : 0} Following
+					</Text>
+					<Flex
+						direction="column"
+						p={5}
+						bg={bgColor}
+						minH="100px"
+						color={textColor}
+						spacing={4}
+						mt={5}>
+						{followings ? (
+							followings.map((follower) => (
+								<Followers key={follower} id={follower} />
+							))
+						) : (
+							<h1>NO Followers</h1>
+						)}
+					</Flex>
 				</GridItem>
 			</Grid>
 			{!fetchingPosts && posts.length === 0 && (

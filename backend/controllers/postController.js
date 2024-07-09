@@ -1,3 +1,4 @@
+import { query } from "express";
 import Post from "../models/postModel.js";
 import User from "../models/userModel.js";
 import { v2 as cloudinary } from "cloudinary";
@@ -8,7 +9,9 @@ const createPost = async (req, res) => {
 		let { img } = req.body;
 
 		if (!postedBy || !text) {
-			return res.status(400).json({ error: "Postedby and text fields are required" });
+			return res
+				.status(400)
+				.json({ error: "Postedby and text fields are required" });
 		}
 
 		const user = await User.findById(postedBy);
@@ -22,7 +25,9 @@ const createPost = async (req, res) => {
 
 		const maxLength = 500;
 		if (text.length > maxLength) {
-			return res.status(400).json({ error: `Text must be less than ${maxLength} characters` });
+			return res
+				.status(400)
+				.json({ error: `Text must be less than ${maxLength} characters` });
 		}
 
 		if (img) {
@@ -136,16 +141,19 @@ const replyToPost = async (req, res) => {
 
 const getFeedPosts = async (req, res) => {
 	try {
+		console.log(req.body);
 		const userId = req.user._id;
 		const user = await User.findById(userId);
 		if (!user) {
 			return res.status(404).json({ error: "User not found" });
 		}
-
 		const following = user.following;
 
-		const feedPosts = await Post.find({ postedBy: { $in: following } }).sort({ createdAt: -1 });
+		const query = await Post.find({ postedBy: { $in: following } }).sort({
+			createdAt: -1,
+		});
 
+		const feedPosts = await query;
 		res.status(200).json(feedPosts);
 	} catch (err) {
 		res.status(500).json({ error: err.message });
@@ -160,7 +168,9 @@ const getUserPosts = async (req, res) => {
 			return res.status(404).json({ error: "User not found" });
 		}
 
-		const posts = await Post.find({ postedBy: user._id }).sort({ createdAt: -1 });
+		const posts = await Post.find({ postedBy: user._id }).sort({
+			createdAt: -1,
+		});
 
 		res.status(200).json(posts);
 	} catch (error) {
@@ -168,4 +178,12 @@ const getUserPosts = async (req, res) => {
 	}
 };
 
-export { createPost, getPost, deletePost, likeUnlikePost, replyToPost, getFeedPosts, getUserPosts };
+export {
+	createPost,
+	getPost,
+	deletePost,
+	likeUnlikePost,
+	replyToPost,
+	getFeedPosts,
+	getUserPosts,
+};

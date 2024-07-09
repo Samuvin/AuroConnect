@@ -25,7 +25,6 @@ export default function LoginCard() {
 	const setAuthScreen = useSetRecoilState(authScreenAtom);
 	const setUser = useSetRecoilState(userAtom);
 	const [loading, setLoading] = useState(false);
-
 	const [inputs, setInputs] = useState({
 		username: "",
 		password: "",
@@ -70,15 +69,19 @@ export default function LoginCard() {
 					w={{
 						base: "full",
 						sm: "400px",
-					}}
-				>
+					}}>
 					<Stack spacing={4}>
 						<FormControl isRequired>
 							<FormLabel>Username</FormLabel>
 							<Input
-								type='text'
+								type="text"
 								value={inputs.username}
-								onChange={(e) => setInputs((inputs) => ({ ...inputs, username: e.target.value }))}
+								onChange={(e) =>
+									setInputs((inputs) => ({
+										...inputs,
+										username: e.target.value,
+									}))
+								}
 							/>
 						</FormControl>
 						<FormControl isRequired>
@@ -87,13 +90,19 @@ export default function LoginCard() {
 								<Input
 									type={showPassword ? "text" : "password"}
 									value={inputs.password}
-									onChange={(e) => setInputs((inputs) => ({ ...inputs, password: e.target.value }))}
+									onChange={(e) =>
+										setInputs((inputs) => ({
+											...inputs,
+											password: e.target.value,
+										}))
+									}
 								/>
 								<InputRightElement h={"full"}>
 									<Button
 										variant={"ghost"}
-										onClick={() => setShowPassword((showPassword) => !showPassword)}
-									>
+										onClick={() =>
+											setShowPassword((showPassword) => !showPassword)
+										}>
 										{showPassword ? <ViewIcon /> : <ViewOffIcon />}
 									</Button>
 								</InputRightElement>
@@ -101,23 +110,24 @@ export default function LoginCard() {
 						</FormControl>
 						<Stack spacing={10} pt={2}>
 							<Button
-								loadingText='Logging in'
-								size='lg'
+								loadingText="Logging in"
+								size="lg"
 								bg={useColorModeValue("gray.600", "gray.700")}
 								color={"white"}
 								_hover={{
 									bg: useColorModeValue("gray.700", "gray.800"),
 								}}
 								onClick={handleLogin}
-								isLoading={loading}
-							>
+								isLoading={loading}>
 								Login
 							</Button>
 						</Stack>
 						<Stack pt={6}>
 							<Text align={"center"}>
 								Don&apos;t have an account?{" "}
-								<Link color={"blue.400"} onClick={() => setAuthScreen("signup")}>
+								<Link
+									color={"blue.400"}
+									onClick={() => setAuthScreen("signup")}>
 									Sign up
 								</Link>
 							</Text>

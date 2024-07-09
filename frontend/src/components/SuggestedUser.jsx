@@ -29,8 +29,7 @@ const SuggestedUser = ({ user }) => {
 				_hover={{
 					color: following ? "black" : "white",
 					opacity: ".8",
-				}}
-			>
+				}}>
 				{following ? "Unfollow" : "Follow"}
 			</Button>
 		</Flex>
