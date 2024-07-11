@@ -8,6 +8,7 @@ const useFollowUnfollow = (user) => {
 	const [following, setFollowing] = useState(
 		user.followers.includes(currentUser?._id)
 	);
+
 	const [updating, setUpdating] = useState(false);
 	const showToast = useShowToast();
 

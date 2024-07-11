@@ -22,14 +22,10 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import Followers from "../components/Followers";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
-import useFollowUnfollow from "../hooks/useFollowUnfollow";
-
 const UserPage = () => {
 	const { user, loading } = useGetUserProfile();
 	const { username } = useParams();
 	const currentUser = useRecoilValue(userAtom);
-	// const { handleFollowUnfollow, following, updating } = useFollowUnfollow(user);
-
 	const showToast = useShowToast();
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [fetchingPosts, setFetchingPosts] = useState(true);
@@ -40,7 +36,6 @@ const UserPage = () => {
 	const color = useColorModeValue("gray.800", "white");
 	const bgColor = useColorModeValue("gray.100", "gray.800");
 	const textColor = useColorModeValue("gray.800", "whiteAlpha.900");
-	console.log("current", currentUser);
 	useEffect(() => {
 		const getPosts = async () => {
 			if (!user) return;
@@ -58,11 +53,16 @@ const UserPage = () => {
 		};
 
 		const checkFollowStatus = async () => {
-			if (!user) return;
+			if (!user || !currentUser) return;
 			try {
-				const res = await fetch(`/api/users/follow-status/${user}`);
-				const data = await res.json();
-				setIsFollowing(data.isFollowing);
+				console.log(user);
+				if (currentUser.following.includes(user._id)) {
+					setIsFollowing(true);
+					console.log("true");
+				} else {
+					setIsFollowing(false);
+					console.log("true");
+				}
 			} catch (error) {
 				showToast("Error", error.message, "error");
 			}
@@ -84,7 +84,7 @@ const UserPage = () => {
 			try {
 				const res = await fetch(`/api/users/following/${user._id}`);
 				const data = await res.json();
-				console.log(data);
+
 				setFollowing(data);
 			} catch (error) {
 				showToast("Error", error.message, "error");
@@ -92,7 +92,7 @@ const UserPage = () => {
 		};
 
 		getPosts();
-		// checkFollowStatus();
+		checkFollowStatus();
 		fetchFollowers();
 		fetchFollowing();
 	}, [username, showToast, setPosts, user]);

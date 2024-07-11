@@ -5,31 +5,31 @@ import Post from "../components/Post";
 import { useRecoilState, useRecoilValue } from "recoil";
 import postsAtom from "../atoms/postsAtom";
 import SuggestedUsers from "../components/SuggestedUsers";
-import AI from "../components/AI";
+import Contest from "../components/Contest";
 import feedAtom from "../atoms/feedAtom";
+import axios from "axios";
+import userAtom from "../atoms/userAtom";
 
 const HomePage = () => {
 	const feedsort = useRecoilValue(feedAtom);
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [loading, setLoading] = useState(true);
 	const showToast = useShowToast();
+	const currentUser = useRecoilValue(userAtom);
 	useEffect(() => {
 		const getFeedPosts = async () => {
 			setLoading(true);
 			setPosts([]);
 			try {
-				const res = await fetch("/api/posts/feed", {
-					method: "GET",
-					headers: {
-						"Content-Type": "application/json",
-					},
+				const res = await axios.get("/api/posts/feed", {
+					params: { sort: feedsort, user_id: currentUser._id },
 				});
-				const data = await res.json();
+				console.log(res.data);
+				const data = res.data;
 				if (data.error) {
 					showToast("Error", data.error, "error");
 					return;
 				}
-				console.log(data);
 				setPosts(data);
 			} catch (error) {
 				showToast("Error", error.message, "error");
@@ -42,7 +42,7 @@ const HomePage = () => {
 
 	return (
 		<Flex gap="10" alignItems={"flex-start"}>
-			<AI />
+			<Contest />
 			<Box flex={70}>
 				{!loading && posts.length === 0 && (
 					<h1>Follow some users to see the feed</h1>
