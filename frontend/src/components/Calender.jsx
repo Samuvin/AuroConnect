@@ -18,13 +18,15 @@ import {
 	useDisclosure,
 	ModalCloseButton,
 } from "@chakra-ui/react";
-
+import userAtom from "../atoms/userAtom";
+import { useRecoilState } from "recoil";
 const Calendar = () => {
 	const [loading, setLoading] = useState(false);
 	const showToast = useShowToast();
 	const [contestByMonth, setContestByMonth] = useState({});
 	const [selectedContest, setSelectedContest] = useState(null); // Changed to hold contest details
 	const [empty, setempty] = useState(true);
+	const [user, setUser] = useRecoilState(userAtom);
 	const username = "samuvin";
 	const apiKey = "ef448e68721775fa1129b1ae4bdf09ea018ef7cf";
 	const url = `https://clist.by/api/v1/contest/?username=${username}&api_key=${apiKey}&upcoming=true`;
@@ -55,6 +57,7 @@ const Calendar = () => {
 
 	const generateCalendar = async () => {
 		setLoading(true);
+
 		try {
 			const response = await axios.get(url);
 			const data = response.data;
@@ -87,7 +90,7 @@ const Calendar = () => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(selectedContest),
+				body: JSON.stringify({ ...selectedContest, email: user.email }),
 			});
 			const response = await data.json();
 			showToast("Success", response.message, "success");

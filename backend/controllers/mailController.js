@@ -23,21 +23,26 @@ async function sendMail(req, res) {
 			try {
 				// Send mail with defined transport object
 				let info = await transporter.sendMail({
-					from: process.env.EMAIL_USER, // sender address
-					to: "samuvin.j@example.com", // list of receivers
-					subject: `Reminder: ${req.body.name} Contest`, // Subject line
+					from: `"Contest Reminder" <${process.env.EMAIL_USER}>`, // sender address
+					to: req.body.email, // list of receivers
+					subject: `Reminder: ${req.body.event} Contest`, // Subject line
 					html: `
-                        <h1>${req.body.event}</h1>
-                        <p>Start Date: ${startDate.toUTCString()}</p>
-                        <p>Duration: ${req.body.duration}</p>
-                        <p>Link: ${req.body.href}</p>
-                        <p>This is a reminder that the contest will start in 1 hour.</p>
-                    `,
+		<div style="font-family: Arial, sans-serif; line-height: 1.6;">
+			<h1 style="color: #4CAF50; margin-bottom: 20px;">${req.body.event}</h1>
+			<p style="margin-bottom: 10px;"><strong>Start Date:</strong> ${startDate.toUTCString()}</p>
+			<p style="margin-bottom: 10px;"><strong>Duration:</strong> ${
+				req.body.duration
+			}</p>
+			<p style="margin-bottom: 10px;"><strong>Link:</strong> <a href="${
+				req.body.href
+			}" style="color: #1E90FF; text-decoration: none;">Contest Link</a></p>
+			<p style="margin-bottom: 10px; color: #FF6347;">This is a reminder that the contest will start in 1 hour.</p>
+		</div>
+	`,
 				});
-				console.log("Reminder email sent: %s", info.messageId); // Message ID
 				res.status(200).json({
 					status: "Success",
-					message: `Reminder email sent: %s, ${info.messageId}`,
+					message: `Remainder email for ${req.body.event} `,
 				});
 			} catch (error) {
 				console.error("Error sending reminder email:", error);
@@ -47,7 +52,6 @@ async function sendMail(req, res) {
 				});
 			}
 		};
-
 		// Calculate the reminder time (1 hour before start)
 		const reminderTime = new Date(startDate.getTime() - 60 * 60 * 1000);
 		console.log(`Reminder time: ${reminderTime}`);
@@ -61,14 +65,12 @@ async function sendMail(req, res) {
 		cron.schedule(cronTime, sendReminderEmail);
 
 		console.log();
-		res
-			.status(200)
-			.json({
-				status: "success",
-				message: `Scheduled reminder email for ${
-					req.body.event
-				} at ${reminderTime.toUTCString()}`,
-			});
+		res.status(200).json({
+			status: "success",
+			message: `Scheduled reminder email for ${
+				req.body.event
+			} at ${reminderTime.toUTCString()}`,
+		});
 	} catch (error) {
 		console.error("Error scheduling email:", error);
 		res.status(400).json({ status: "failed", message: error.message });
