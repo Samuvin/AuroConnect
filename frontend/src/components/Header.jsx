@@ -8,6 +8,7 @@ import {
 	IconButton,
 	Tooltip,
 } from "@chakra-ui/react";
+import { RiTeamFill } from "react-icons/ri";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { AiFillHome } from "react-icons/ai";
@@ -16,7 +17,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import useLogout from "../hooks/useLogout";
 import authScreenAtom from "../atoms/authAtom";
-import { GiBookAura } from "react-icons/gi";
+import { TbWorldCode } from "react-icons/tb";
 import { BsFillChatQuoteFill } from "react-icons/bs";
 import { MdOutlineSettings } from "react-icons/md";
 import { PiUserSwitchFill } from "react-icons/pi";
@@ -77,7 +78,7 @@ const Header = () => {
 				marginLeft={20}
 				onClick={toggleColorMode}
 				_hover={{ transform: "scale(1.2)", transition: "0.2s" }}>
-				<GiBookAura size={30} color={color} />
+				<TbWorldCode size={35} color={color} />
 			</Box>
 
 			{user ? (

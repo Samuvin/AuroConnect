@@ -1,4 +1,13 @@
-import { Avatar, Box, Button, Divider, Flex, Image, Spinner, Text } from "@chakra-ui/react";
+import {
+	Avatar,
+	Box,
+	Button,
+	Divider,
+	Flex,
+	Image,
+	Spinner,
+	Text,
+} from "@chakra-ui/react";
 import Actions from "../components/Actions";
 import { useEffect } from "react";
 import Comment from "../components/Comment";
@@ -73,21 +82,29 @@ const PostPage = () => {
 		<>
 			<Flex>
 				<Flex w={"full"} alignItems={"center"} gap={3}>
-					<Avatar src={user.profilePic} size={"md"} name='Mark Zuckerberg' />
+					<Avatar src={user.profilePic} size={"md"} name="Mark Zuckerberg" />
 					<Flex>
 						<Text fontSize={"sm"} fontWeight={"bold"}>
 							{user.username}
 						</Text>
-						<Image src='/verified.png' w='4' h={4} ml={4} />
+						<Image src="/verified.png" w="4" h={4} ml={4} />
 					</Flex>
 				</Flex>
 				<Flex gap={4} alignItems={"center"}>
-					<Text fontSize={"xs"} width={36} textAlign={"right"} color={"gray.light"}>
+					<Text
+						fontSize={"xs"}
+						width={36}
+						textAlign={"right"}
+						color={"gray.light"}>
 						{formatDistanceToNow(new Date(currentPost.createdAt))} ago
 					</Text>
 
 					{currentUser?._id === user._id && (
-						<DeleteIcon size={20} cursor={"pointer"} onClick={handleDeletePost} />
+						<DeleteIcon
+							size={20}
+							cursor={"pointer"}
+							onClick={handleDeletePost}
+						/>
 					)}
 				</Flex>
 			</Flex>
@@ -95,7 +112,11 @@ const PostPage = () => {
 			<Text my={3}>{currentPost.text}</Text>
 
 			{currentPost.img && (
-				<Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
+				<Box
+					borderRadius={6}
+					overflow={"hidden"}
+					border={"1px solid"}
+					borderColor={"gray.light"}>
 					<Image src={currentPost.img} w={"full"} />
 				</Box>
 			)}
@@ -119,7 +140,10 @@ const PostPage = () => {
 				<Comment
 					key={reply._id}
 					reply={reply}
-					lastReply={reply._id === currentPost.replies[currentPost.replies.length - 1]._id}
+					lastReply={
+						reply._id ===
+						currentPost.replies[currentPost.replies.length - 1]._id
+					}
 				/>
 			))}
 		</>
