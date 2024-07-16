@@ -151,8 +151,6 @@ const getFeedPosts = async (req, res) => {
 		if (!user) {
 			return res.status(404).json({ error: "User not found" });
 		}
-
-		console.log(sort);
 		const following = user.following;
 		let query = Post.find({ postedBy: { $in: following } });
 		query = query.sort(sort);

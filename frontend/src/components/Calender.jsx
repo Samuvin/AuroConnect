@@ -1,6 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import { Flex } from "@chakra-ui/react";
+import { FaBell } from "react-icons/fa";
+import { FaAngleDoubleDown } from "react-icons/fa";
+import useShowToast from "../hooks/useShowToast";
 import {
 	Modal,
 	ModalOverlay,
@@ -18,6 +21,7 @@ import {
 
 const Calendar = () => {
 	const [loading, setLoading] = useState(false);
+	const showToast = useShowToast();
 	const [contestByMonth, setContestByMonth] = useState({});
 	const [selectedContest, setSelectedContest] = useState(null); // Changed to hold contest details
 	const [empty, setempty] = useState(true);
@@ -27,10 +31,7 @@ const Calendar = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const handleButtonClick = (contest) => {
-		console.log(contest.resource);
-		// Accept contest object as parameter
 		setSelectedContest(contest);
-
 		onOpen();
 	};
 	const formatDateTimeToIST = (isoString) => {
@@ -58,7 +59,6 @@ const Calendar = () => {
 			const response = await axios.get(url);
 			const data = response.data;
 			const now = new Date();
-
 			const contestsByMonth = {};
 			data.objects.forEach((contest) => {
 				const startTime = new Date(contest.start);
@@ -76,15 +76,31 @@ const Calendar = () => {
 			setempty(false);
 		} catch (error) {
 			console.error("Error fetching contest data:", error);
+		} finally {
+			setLoading(false);
 		}
-		setLoading(false);
 	};
-
+	const mailto = async () => {
+		try {
+			const data = await fetch("/api/mail/", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(selectedContest),
+			});
+			const response = await data.json();
+			showToast("Success", response.message, "success");
+		} catch (err) {
+			console.log(err);
+		}
+	};
 	return (
 		<>
 			{empty && (
 				<button onClick={generateCalendar} disabled={loading}>
-					Generate {loading && <h1>Loading....</h1>}
+					<FaAngleDoubleDown />
+					{loading && <h1>Loading....</h1>}
 				</button>
 			)}
 			{Object.entries(contestByMonth).map(([monthYear, contests]) => (
@@ -119,6 +135,9 @@ const Calendar = () => {
 								<p>Host: {selectedContest.resource.name}</p>
 							</div>
 						)}
+						<Button mt={2} onClick={mailto}>
+							<FaBell />
+						</Button>
 					</ModalBody>
 
 					<ModalFooter>
