@@ -19,7 +19,7 @@ import authScreenAtom from "../atoms/authAtom";
 import { TbWorldCode } from "react-icons/tb";
 import { MdOutlineSettings } from "react-icons/md";
 import { PiUserSwitchFill } from "react-icons/pi";
-// import Search from "./search";
+import Search from "./search";
 
 const Header = () => {
 	const { colorMode, toggleColorMode } = useColorMode();
@@ -120,7 +120,7 @@ const Header = () => {
 						</Link>
 					</Tooltip>
 
-					{/* <Search /> */}
+					<Search />
 
 					<Tooltip label="Logout" aria-label="Logout Tooltip">
 						<IconButton
