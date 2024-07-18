@@ -52,67 +52,67 @@ const UserPage = () => {
 			}
 		};
 
-		const checkFollowStatus = async () => {
-			if (!user || !currentUser) return;
-			try {
-				console.log(user);
-				if (currentUser.following.includes(user._id)) {
-					setIsFollowing(true);
-					console.log("true");
-				} else {
-					setIsFollowing(false);
-					console.log("true");
-				}
-			} catch (error) {
-				showToast("Error", error.message, "error");
-			}
-		};
+		// const checkFollowStatus = async () => {
+		// 	if (!user || !currentUser) return;
+		// 	try {
+		// 		console.log(user);
+		// 		if (currentUser?.following?.includes(user._id)) {
+		// 			setIsFollowing(true);
+		// 			console.log("true");
+		// 		} else {
+		// 			setIsFollowing(false);
+		// 			console.log("true");
+		// 		}
+		// 	} catch (error) {
+		// 		showToast("Error", error.message, "error");
+		// 	}
+		// };
 
-		const fetchFollowers = async () => {
-			if (!user) return;
-			try {
-				const res = await fetch(`/api/users/followers/${user._id}`);
-				const data = await res.json();
-				setFollowers(data);
-			} catch (error) {
-				showToast("Error", error.message, "error");
-			}
-		};
+		// const fetchFollowers = async () => {
+		// 	if (!user) return;
+		// 	try {
+		// 		const res = await fetch(`/api/users/followers/${user._id}`);
+		// 		const data = await res.json();
+		// 		setFollowers(data);
+		// 	} catch (error) {
+		// 		showToast("Error", error.message, "error");
+		// 	}
+		// };
 
-		const fetchFollowing = async () => {
-			if (!user) return;
-			try {
-				const res = await fetch(`/api/users/following/${user._id}`);
-				const data = await res.json();
+		// const fetchFollowing = async () => {
+		// 	if (!user) return;
+		// 	try {
+		// 		const res = await fetch(`/api/users/following/${user._id}`);
+		// 		const data = await res.json();
 
-				setFollowing(data);
-			} catch (error) {
-				showToast("Error", error.message, "error");
-			}
-		};
+		// 		setFollowing(data);
+		// 	} catch (error) {
+		// 		showToast("Error", error.message, "error");
+		// 	}
+		// };
 
-		getPosts();
-		checkFollowStatus();
-		fetchFollowers();
-		fetchFollowing();
-	}, [username, showToast, setPosts, user]);
-
-	const handleFollowToggle = async () => {
-		try {
-			const res = await fetch(`/api/users/${username}/follow`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ follow: !isFollowing }),
-			});
-			const data = await res.json();
-			setIsFollowing(data.isFollowing);
-			showToast("Success", data.message, "success");
-		} catch (error) {
-			showToast("Error", error.message, "error");
-		}
-	};
+		// const handleFollowToggle = async () => {
+		// 	try {
+		// 		const res = await fetch(`/api/users/${username}/follow`, {
+		// 			method: "POST",
+		// 			headers: {
+		// 				"Content-Type": "application/json",
+		// 			},
+		// 			body: JSON.stringify({ follow: !isFollowing }),
+		// 		});
+		// 		const data = await res.json();
+		// 		setIsFollowing(data.isFollowing);
+		// 		showToast("Success", data.message, "success");
+		// 	} catch (error) {
+		// 		showToast("Error", error.message, "error");
+		// 	}
+		// };
+		// getPosts();
+		// // checkFollowStatus();
+		// handleFollowToggle();
+		// fetchFollowers();
+		// fetchFollowing();
+	}, [username, showToast, setPosts, user, currentUser]);
 
 	if (!user && loading) {
 		return (
@@ -144,22 +144,20 @@ const UserPage = () => {
 						{user.bio}
 					</Text>
 				</Stack>
-				{/* {currentUser._id !== user._id && (
+				{currentUser._id !== user._id && (
 					<Button
 						size={"sm"}
-						color={following ? "black" : "white"}
-						bg={following ? "white" : "blue.400"}
-						onClick={handleFollowUnfollow}
-						isLoading={updating}
+						color={isFollowing ? "black" : "white"}
+						bg={isFollowing ? "white" : "blue.400"}
 						_hover={{
-							color: following ? "black" : "white",
+							color: isFollowing ? "black" : "white",
 							opacity: ".8",
 						}}>
-						{following ? "Unfollow" : "Follow"}
+						{isFollowing ? "Unfollow" : "Follow"}
 					</Button>
-				)} */}
+				)}
 			</Flex>
-			<Grid templateColumns="repeat(3, 1fr)" gap={6}>
+			{/* <Grid templateColumns="repeat(3, 1fr)" gap={6}>
 				<GridItem w="100%" h="100%">
 					<Box textAlign="center" mb={{ base: 4, md: 0 }}>
 						<Text fontSize="lg" fontWeight="bold">
@@ -244,7 +242,7 @@ const UserPage = () => {
 				<Flex justifyContent="center" my={12}>
 					<Spinner size={"xl"} />
 				</Flex>
-			)}
+			)} */}
 		</Box>
 	);
 };

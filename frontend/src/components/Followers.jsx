@@ -18,9 +18,11 @@ const Followers = ({ id }) => {
 	const { colorMode } = useColorMode();
 	useEffect(() => {
 		const fetchUser = async () => {
+			if (!id) return;
 			try {
 				const response = await fetch(`/api/users/profile/${id}`);
 				const follower = await response.json();
+
 				if (follower) {
 					setUser(follower);
 				}

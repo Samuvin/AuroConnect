@@ -1,4 +1,4 @@
-import { Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Box, useColorModeValue } from "@chakra-ui/react";
 import Calendar from "./Calender";
 
 const Contest = () => {
@@ -19,9 +19,9 @@ const Contest = () => {
 					"rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset",
 			}}
 			mb={4}>
-			<Text fontWeight="bold" mb={2} color={textColor}>
+			<Box fontWeight="bold" mb={2} color={textColor}>
 				<Calendar />
-			</Text>
+			</Box>
 		</Flex>
 	);
 };

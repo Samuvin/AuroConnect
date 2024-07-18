@@ -4,8 +4,7 @@ import {
 	Flex,
 	Button,
 	Text,
-	UnorderedList,
-	ListItem,
+	Box,
 	Modal,
 	ModalOverlay,
 	ModalContent,
@@ -19,15 +18,14 @@ import { FaBell, FaAngleDoubleDown } from "react-icons/fa";
 import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
 import { useRecoilState } from "recoil";
-import { FaAnglesDown } from "react-icons/fa6";
 
 const Calendar = () => {
 	const [loading, setLoading] = useState(false);
 	const showToast = useShowToast();
 	const [contestByMonth, setContestByMonth] = useState({});
-	const [selectedContest, setSelectedContest] = useState(null); // Changed to hold contest details
+	const [selectedContest, setSelectedContest] = useState(null); // Holds contest details
 	const [empty, setEmpty] = useState(true);
-	const [user, setUser] = useRecoilState(userAtom);
+	const [user] = useRecoilState(userAtom);
 	const [currentPage, setCurrentPage] = useState(0); // Track current page of contests
 	const [hasMore, setHasMore] = useState(true); // Track if there are more contests to fetch
 	const pageSize = 20; // Number of contests per page
@@ -144,22 +142,27 @@ const Calendar = () => {
 			{Object.entries(contestByMonth).map(([monthYear, contests]) => (
 				<Flex key={monthYear} flexDirection="column" gap={2}>
 					<Text>{monthYear}</Text>
-					<UnorderedList spacing={3} m={2}>
-						{contests.map((contest) => (
-							<ListItem
-								key={contest.id}
+					<Box m={2}>
+						{contests.map((contest, index) => (
+							<Box
+								key={`${contest.id}-${index}`} // Ensure key is unique
 								ml={2}
 								onClick={() => handleButtonClick(contest)}
-								cursor="pointer">
+								cursor="pointer"
+								borderWidth="1px"
+								borderRadius="lg"
+								p={2}
+								mb={2}
+								_hover={{ backgroundColor: "gray.100" }}>
 								{contest.event}
-							</ListItem>
+							</Box>
 						))}
-					</UnorderedList>
+					</Box>
 				</Flex>
 			))}
 			{hasMore && (
 				<Button
-					onClick={generateCalendar}
+					onClick={handleLoadMore}
 					disabled={loading}
 					leftIcon={<FaAngleDoubleDown />}
 					isLoading={loading}
@@ -175,11 +178,15 @@ const Calendar = () => {
 					<ModalBody>
 						{selectedContest && (
 							<div>
-								<p>Name: {selectedContest.event}</p>
-								<p>Start Date: {formatDateTimeToIST(selectedContest.start)}</p>
-								<p>End Date: {formatDateTimeToIST(selectedContest.end)}</p>
-								<p>Duration: {selectedContest.duration / 3600} Hours</p>
-								<p>Host: {selectedContest.resource.name}</p>
+								<Text>Name: {selectedContest.event}</Text>
+								<Text>
+									Start Date: {formatDateTimeToIST(selectedContest.start)}
+								</Text>
+								<Text>
+									End Date: {formatDateTimeToIST(selectedContest.end)}
+								</Text>
+								<Text>Duration: {selectedContest.duration / 3600} Hours</Text>
+								<Text>Host: {selectedContest.resource.name}</Text>
 							</div>
 						)}
 						<Button mt={2} onClick={mailto}>

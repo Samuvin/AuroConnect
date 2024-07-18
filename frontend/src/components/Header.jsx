@@ -8,7 +8,6 @@ import {
 	IconButton,
 	Tooltip,
 } from "@chakra-ui/react";
-import { RiTeamFill } from "react-icons/ri";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { AiFillHome } from "react-icons/ai";
@@ -18,9 +17,9 @@ import { FiLogOut } from "react-icons/fi";
 import useLogout from "../hooks/useLogout";
 import authScreenAtom from "../atoms/authAtom";
 import { TbWorldCode } from "react-icons/tb";
-import { BsFillChatQuoteFill } from "react-icons/bs";
 import { MdOutlineSettings } from "react-icons/md";
 import { PiUserSwitchFill } from "react-icons/pi";
+import Search from "./search";
 
 const Header = () => {
 	const { colorMode, toggleColorMode } = useColorMode();
@@ -95,6 +94,7 @@ const Header = () => {
 							/>
 						</Link>
 					</Tooltip>
+
 					<Tooltip label="Chat" aria-label="Chat Tooltip">
 						<Link as={RouterLink} to={`/chat`}>
 							<IconButton
@@ -119,6 +119,9 @@ const Header = () => {
 							/>
 						</Link>
 					</Tooltip>
+
+					<Search />
+
 					<Tooltip label="Logout" aria-label="Logout Tooltip">
 						<IconButton
 							icon={<FiLogOut size="1.7rem" />}

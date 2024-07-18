@@ -24,7 +24,6 @@ const HomePage = () => {
 				const res = await axios.get("/api/posts/feed", {
 					params: { sort: feedsort, user_id: currentUser._id },
 				});
-				console.log(res.data);
 				const data = res.data;
 				if (data.error) {
 					showToast("Error", data.error, "error");

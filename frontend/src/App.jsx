@@ -1,5 +1,5 @@
 import { Box, Container } from "@chakra-ui/react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useMatch } from "react-router-dom";
 import UserPage from "./pages/UserPage";
 import PostPage from "./pages/PostPage";
 import Header from "./components/Header";
@@ -11,12 +11,20 @@ import UpdateProfilePage from "./pages/UpdateProfilePage";
 import CreatePost from "./components/CreatePost";
 import ChatPage from "./pages/ChatPage";
 import { SettingsPage } from "./pages/SettingsPage";
+
 function App() {
+	const matchPostPage = useMatch("/:username/post/:pid");
+
 	const user = useRecoilValue(userAtom);
 	return (
 		<Box position={"relative"} w="full">
-			<Container maxW={"fl"}>
-				<Header />
+			<Header />
+			<Container
+				maxW={
+					matchPostPage?.pattern?.path === "/:username/post/:pid"
+						? "45rem"
+						: "fl"
+				}>
 				<Routes>
 					<Route
 						path="/"
