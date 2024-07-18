@@ -7,17 +7,13 @@ import {
 	signupUser,
 	updateUser,
 	getSuggestedUsers,
-	getFollowing,
 	freezeAccount,
-	getFollowers,
 } from "../controllers/userController.js";
 import protectRoute from "../middlewares/protectRoute.js";
 
 const router = express.Router();
 
 router.get("/profile/:query", getUserProfile);
-router.get("/followers/:id", getFollowers);
-router.get("/following/:id", getFollowing);
 router.get("/suggested", protectRoute, getSuggestedUsers);
 router.post("/signup", signupUser);
 router.post("/login", loginUser);

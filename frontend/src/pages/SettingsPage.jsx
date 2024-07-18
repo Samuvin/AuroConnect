@@ -54,34 +54,6 @@ export const SettingsPage = () => {
 						Freeze
 					</Button>
 				</Box>
-
-				<Box>
-					<Text my={1} fontWeight={"bold"}>
-						Sort Feed
-					</Text>
-					<Text my={1}>You can Sort your account anytime by logging in.</Text>
-					<Menu>
-						<MenuButton
-							colorScheme="red"
-							as={Button}
-							rightIcon={<ChevronDownIcon />}>
-							Actions
-						</MenuButton>
-						<MenuList>
-							<MenuItem onClick={() => handlesort("createdAt")}>
-								Created Date Asc
-							</MenuItem>
-							<MenuItem onClick={() => handlesort("-createdAt")}>
-								Created Date Dsc
-							</MenuItem>
-							<MenuItem onClick={() => handlesort("likes")}>Likes Asc</MenuItem>
-							<MenuItem onClick={() => handlesort("-likes")}>
-								Likes Dsc
-							</MenuItem>
-							<MenuItem onClick={() => handlesort("liked")}>Liked</MenuItem>
-						</MenuList>
-					</Menu>
-				</Box>
 			</Flex>
 		</>
 	);

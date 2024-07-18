@@ -140,32 +140,21 @@ const replyToPost = async (req, res) => {
 
 const getFeedPosts = async (req, res) => {
 	try {
-		let sort = req.query.sort;
-		const user_id = req.query.user_id;
-		const order = (sort.startsWith("-") ? -1 : 1) * 1;
-		const sortKey = sort.startsWith("-") ? sort.slice(1) : sort;
-
 		const userId = req.user._id;
 		const user = await User.findById(userId);
-
 		if (!user) {
 			return res.status(404).json({ error: "User not found" });
 		}
+
 		const following = user.following;
-		let query = Post.find({ postedBy: { $in: following } });
-		query = query.sort(sort);
 
-		if (sort === "liked") {
-			query = query.find({
-				likes: user_id,
-			});
-		}
+		const feedPosts = await Post.find({ postedBy: { $in: following } }).sort({
+			createdAt: -1,
+		});
 
-		const feedPosts = await query;
 		res.status(200).json(feedPosts);
-	} catch (error) {
-		console.error("Error fetching feed posts:", error);
-		res.status(500).json({ error: "Internal server error" });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
 	}
 };
 

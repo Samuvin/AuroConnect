@@ -26,6 +26,7 @@ const getUserProfile = async (req, res) => {
 		}
 
 		if (!user) return res.status(404).json({ error: "User not found" });
+
 		res.status(200).json(user);
 	} catch (err) {
 		res.status(500).json({ error: err.message });
@@ -147,15 +148,6 @@ const followUnFollowUser = async (req, res) => {
 		console.log("Error in followUnFollowUser: ", err.message);
 	}
 };
-const isFollowing = async (req, res) => {
-	try {
-		const { userid, fiendid } = req.body;
-		const currentUser = await User.findById(userid);
-		const Freind = await User.findById(fiendid);
-	} catch (err) {
-		res.status(500).json({ Error: err.message });
-	}
-};
 
 const updateUser = async (req, res) => {
 	const { name, email, username, password, bio } = req.body;
@@ -239,7 +231,9 @@ const getSuggestedUsers = async (req, res) => {
 			(user) => !usersFollowedByYou.following.includes(user._id)
 		);
 		const suggestedUsers = filteredUsers.slice(0, 4);
+
 		suggestedUsers.forEach((user) => (user.password = null));
+
 		res.status(200).json(suggestedUsers);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
@@ -262,30 +256,8 @@ const freezeAccount = async (req, res) => {
 	}
 };
 
-const getFollowers = async (req, res) => {
-	const user = req.params.id;
-	try {
-		const result = await User.findById({ _id: user });
-		res.status(200).json(result.followers);
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
-};
-
-const getFollowing = async (req, res) => {
-	const user = req.params.id;
-	try {
-		const result = await User.findById({ _id: user });
-		res.status(200).json(result.following);
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
-};
-
 export {
 	signupUser,
-	getFollowing,
-	getFollowers,
 	loginUser,
 	logoutUser,
 	followUnFollowUser,
