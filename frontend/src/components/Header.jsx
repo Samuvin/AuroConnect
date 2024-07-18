@@ -19,7 +19,7 @@ import authScreenAtom from "../atoms/authAtom";
 import { TbWorldCode } from "react-icons/tb";
 import { MdOutlineSettings } from "react-icons/md";
 import { PiUserSwitchFill } from "react-icons/pi";
-import Search from "./search";
+import Search from "./Search";
 
 const Header = () => {
 	const { colorMode, toggleColorMode } = useColorMode();
